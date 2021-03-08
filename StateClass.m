@@ -1,4 +1,4 @@
-classdef StateClass
+classdef StateClass < handle
     properties
         state
         prev_states
