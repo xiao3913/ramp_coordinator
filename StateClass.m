@@ -3,6 +3,7 @@ classdef StateClass
         state
         prev_states
         optimal_value
+        optimal_path
     end
     methods 
         function obj = StateClass(val)
