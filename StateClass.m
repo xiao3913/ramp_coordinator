@@ -23,11 +23,13 @@ classdef StateClass < handle
                         value = max(t_min, optimal_to_come + tau_L);
                     end
                 end
+                
+                if value < obj.optimal_value
+                    obj.optimal_value = value;
+                    obj.optimal_path = i;
+                end
             end
-            if value < opt_val
-                obj.optimal_value = value;
-                obj.optimal_path = k;
-            end
+
         end
     end
 end
