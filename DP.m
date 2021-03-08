@@ -1,4 +1,4 @@
-function state_tree = DP(n, m)
+function state_tree = DP(n, m, t_min_n, t_min_m, tau, tau_L)
 % DP.m is the implementation of Dynamic Programming algorithm
 % Inputs:
 %   n : number of mainroad vehicles
@@ -25,6 +25,13 @@ for i = 1:n+m
                 prev_state = [j i-j-1 2];
                 state_tree{i+1}(index,:).prev_states = findobj(state_tree{i},'state',prev_state);
             end
+            state_tree{i+1}(index,:).state(3)
+            state_tree{i+1}(index,:).state(2)
+            if state_tree{i+1}(index,:).state(3) == 1
+                state_tree{i+1}(index,:).GetOptimal(state_tree{i+1}(index,:), t_min_n(state_tree{i+1}(index,:).state(1)), tau, tau_L);
+            else
+                state_tree{i+1}(index,:).GetOptimal(state_tree{i+1}(index,:), t_min_m(state_tree{i+1}(index,:).state(2)), tau, tau_L);
+            end
         elseif i-j == 0
             index = index + 1;
             state_tree{i+1} = [state_tree{i+1}; StateClass([j i-j 1])];
@@ -34,6 +41,11 @@ for i = 1:n+m
             else
                 prev_state = [j-1 i-j 1];
                 state_tree{i+1}(index,:).prev_states = findobj(state_tree{i},'state',prev_state);
+            end
+            if state_tree{i+1}(index,:).state(3) == 1
+                state_tree{i+1}(index,:).GetOptimal(state_tree{i+1}(index,:), t_min_n(state_tree{i+1}(index,:).state(1)), tau, tau_L);
+            else
+                state_tree{i+1}(index,:).GetOptimal(state_tree{i+1}(index,:), t_min_m(state_tree{i+1}(index,:).state(2)), tau, tau_L);
             end
         else
             index = index + 1;
@@ -47,6 +59,11 @@ for i = 1:n+m
                 prev_state = [j-1 i-j 2];
                 state_tree{i+1}(index,:).prev_states = [state_tree{i+1}(index,:).prev_states; findobj(state_tree{i},'state',prev_state)];
             end
+            if state_tree{i+1}(index,:).state(3) == 1
+                state_tree{i+1}(index,:).GetOptimal(state_tree{i+1}(index,:), t_min_n(state_tree{i+1}(index,:).state(1)), tau, tau_L);
+            else
+                state_tree{i+1}(index,:).GetOptimal(state_tree{i+1}(index,:), t_min_m(state_tree{i+1}(index,:).state(2)), tau, tau_L);
+            end
             
             index = index + 1;
             state_tree{i+1} = [state_tree{i+1}; StateClass([j i-j 2])];
@@ -59,6 +76,12 @@ for i = 1:n+m
                 prev_state = [j i-j-1 2];
                 state_tree{i+1}(index,:).prev_states = [state_tree{i+1}(index,:).prev_states; findobj(state_tree{i},'state',prev_state)];
             end
+            if state_tree{i+1}(index,:).state(3) == 1
+                state_tree{i+1}(index,:).GetOptimal(state_tree{i+1}(index,:), t_min_n(state_tree{i+1}(index,:).state(1)), tau, tau_L);
+            else
+                state_tree{i+1}(index,:).GetOptimal(state_tree{i+1}(index,:), t_min_m(state_tree{i+1}(index,:).state(2)), tau, tau_L);
+            end
+            
         end
     end
 end
