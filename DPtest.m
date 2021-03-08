@@ -13,8 +13,14 @@ classdef DPtest < matlab.unittest.TestCase
            for i = 1:length(state_tree) 
                 actual_totalstate = actual_totalstate + size(state_tree{i},1);
            end
-           expected_totalstate = 4*3*5;
-           testCase.verifyEqual(expected_totalstate, expected_totalstate)
+           expected_totalstate = 2*3*5+3+5+1;
+           testCase.verifyEqual(actual_totalstate, expected_totalstate)
+        end
+        function testFinalState(testCase)
+           state_tree = DP(7,4);
+           actual_finalstate = state_tree{4+7+1}(1).state;
+           expected_finalstate = [7 4 1];
+           testCase.verifyEqual(actual_finalstate, expected_finalstate)
         end
     end
 end
