@@ -1,4 +1,4 @@
-function state_tree = DP(n, m, t_min_n, t_min_m, tau, tau_L)
+function [state_tree, t_arrival_n, t_arrival_m] = DP(n, m, t_min_n, t_min_m, tau, tau_L)
 % DP.m is the implementation of Dynamic Programming algorithm
 % Inputs:
 %   n : number of mainroad vehicles
@@ -26,8 +26,6 @@ for i = 1:n+m
                 prev_state = [j i-j-1 2];
                 state_tree{i+1}(index,:).prev_states = findobj(state_tree{i},'state',prev_state);
             end
-            state_tree{i+1}(index,:).state(3)
-            state_tree{i+1}(index,:).state(2)
             if state_tree{i+1}(index,:).state(3) == 1
                 state_tree{i+1}(index,:).GetOptimal(t_min_n(state_tree{i+1}(index,:).state(1)), tau, tau_L);
             else
@@ -85,6 +83,27 @@ for i = 1:n+m
             
         end
     end
+end
+
+t_arrival_n = zeros(n,1);
+t_arrival_m = zeros(m,1);
+if state_tree{m+n+1}(1).optimal_value < state_tree{m+n+1}(2).optimal_value
+    last_state = state_tree{m+n+1}(1);
+    path = state_tree{m+n+1}(1).optimal_path;
+    t_arrival_n(n)= state_tree{m+n+1}(1).optimal_value;
+else
+    last_state = state_tree{m+n+1}(2);
+    path = state_tree{m+n+1}(2).optimal_path;
+    t_arrival_m(m)= state_tree{m+n+1}(2).optimal_value;
+end
+for k = m+n:-1:2
+    last_state = last_state.prev_states(path);
+    if last_state.state(3) == 1
+        t_arrival_n(last_state.state(1)) = last_state.optimal_value;
+    elseif last_state.state(3) == 2
+        t_arrival_m(last_state.state(2)) = last_state.optimal_value;
+    end
+    path = last_state.optimal_path;
 end
 
 end
