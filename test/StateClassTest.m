@@ -9,7 +9,7 @@ classdef StateClassTest < matlab.unittest.TestCase
             mydir = pwd;
             idcs   = strfind(pwd,'\');
             newdir = mydir(1:idcs(end)-1);
-            addpath(fullfile(newdir))
+            addpath(fullfile(newdir,'src'))
         end
     end
     methods (TestMethodTeardown)

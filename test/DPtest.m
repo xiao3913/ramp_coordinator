@@ -1,4 +1,21 @@
 classdef DPtest < matlab.unittest.TestCase
+    properties
+        OriginalPath
+    end
+    methods (TestMethodSetup)
+        function addDPtoPath(testCase)
+            testCase.OriginalPath = path;
+            mydir = pwd;
+            idcs   = strfind(pwd,'\');
+            newdir = mydir(1:idcs(end)-1);
+            addpath(fullfile(newdir,'src'))
+        end
+    end
+    methods (TestMethodTeardown)
+        function restorePath(testCase)
+            path(testCase.OriginalPath);
+        end
+    end
     methods(Test)
         function testTotalstage(testCase)
             % test if the DP generate the correct number of stages
