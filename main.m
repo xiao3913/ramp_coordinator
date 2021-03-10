@@ -1,3 +1,5 @@
+%% Program setup
+addpath(fullfile(pwd),'src')
 %% User defined parameters
 v_max = 25; %maximal allowed velocity [m/s] choose between [10 25]
 v_min = 0;  %minimal allowed velocity [m/s] choose between [0 v_max]
