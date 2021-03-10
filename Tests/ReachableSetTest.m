@@ -31,5 +31,47 @@ classdef ReachableSetTest < matlab.unittest.TestCase
             [~,~,~,lower_bound] = reachable_set(dist, a_max, a_min, v_max, vel,t_max);
             testCase.verifyClass(lower_bound{1}, ?function_handle)
         end
+        function testSizeUpper(testCase)
+            %Test if the returned number of time intervals matches with the returned number of 
+            %function handles for the upper bound case, They should math one by one
+            dist = 10; a_max = 3; a_min = 3; v_max = 25; vel = 18; t_max = 30;
+            [tu_interval,~, upper_bound,~] = reachable_set(dist, a_max, a_min, v_max, vel,t_max);
+            expected_size = size(tu_interval);
+            testCase.verifySize(upper_bound,expected_size)
+        end
+        function testSizeLower(testCase)
+            %Test if the returned number of time intervals matches with the returned number of 
+            %function handles for the lower bound case, They should math one by one
+            dist = 10; a_max = 3; a_min = 3; v_max = 25; vel = 18; t_max = 30;
+            [~,tl_interval,~,lower_bound] = reachable_set(dist, a_max, a_min, v_max, vel,t_max);
+            expected_size = size(tl_interval);
+            testCase.verifySize(lower_bound,expected_size)
+        end
+        function testUpperFunctionHandle(testCase)
+            %Test if the upper bound function handle return the correct
+            %number of values given the corresponding time interval input
+            dist = 10; a_max = 3; a_min = 3; v_max = 25; vel = 18; t_max = 30;
+            [tu_interval,~, upper_bound,~] = reachable_set(dist, a_max, a_min, v_max, vel,t_max);
+            dt = 0.001;
+            for i=1:length(tu_interval)
+                t1 = tu_interval{i}(1);
+                t2 = tu_interval{i}(2);
+                expected_size = size([t1:dt:t2]);
+                testCase.verifySize(upper_bound{i}([t1:dt:t2]),expected_size)             
+            end         
+        end
+        function testLowerFunctionHandle(testCase)
+            %Test if the upper bound function handle return the correct
+            %number of values given the corresponding time interval input
+            dist = 10; a_max = 3; a_min = 3; v_max = 25; vel = 18; t_max = 30;
+            [~,tl_interval,~,lower_bound] = reachable_set(dist, a_max, a_min, v_max, vel,t_max);
+            dt = 0.001;
+            for i=1:length(tl_interval)
+                t1 = tl_interval{i}(1);
+                t2 = tl_interval{i}(2);
+                expected_size = size([t1:dt:t2]);
+                testCase.verifySize(lower_bound{i}([t1:dt:t2]),expected_size)             
+            end         
+        end
     end
 end
